@@ -17,8 +17,8 @@ function InventoryManager() {
         fetch(`http://localhost:8001/inventory/${item.id}`, {
             method: "DELETE"
         });
-        removeItemFromInventory(item)
-        removeItemFromReorderList(item)
+        removeItemFromReorderAndInventory(inventory, item, setInventory)
+        removeItemFromReorderAndInventory(reorderInventoryList, item, setReorderInventoryList)
     }
 
     function addItemToReorderList(item){
@@ -29,19 +29,24 @@ function InventoryManager() {
         }
     }
 
-    function removeItemFromInventory(item){
-        setInventory(inventory.filter(i => i !== item))
-    }
+    // function removeItemFromInventory(item){
+    //     setInventory(inventory.filter(i => i !== item))
+    // }
 
     function removeItemFromReorderList(item){
         setReorderInventoryList(reorderInventoryList.filter(i => i !== item))
+    }
+
+    function removeItemFromReorderAndInventory(array, item, setter){
+        console.log(setter, array, item)
+        setter(array.filter(i => i !== item))
     }
     
 
     return(
         <div className="container">
             <CurrentInventoryList inventory={inventory} handleDelete={handleDelete} addItemToReorderList={addItemToReorderList}/>
-            <ReorderInventoryList reorderInventoryList={reorderInventoryList} handleDelete={handleDelete} addItemToReorderList={removeItemFromReorderList}/>
+            <ReorderInventoryList reorderInventoryList={reorderInventoryList} handleDelete={handleDelete} removeItemFromReorderList={removeItemFromReorderList}/>
         </div>
     );
 }
